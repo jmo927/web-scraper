@@ -32,7 +32,7 @@ module.exports = function (app) {
                     .children("a")
                     .children("h2")
                     .text();
-                result.link = $(this)
+                result.link = "https://www.theatlantic.com" + $(this)
                     .children("a")
                     .attr("href");
                 result.summary = $(this)
@@ -50,17 +50,17 @@ module.exports = function (app) {
                     .attr("title");
                 // Create a new Article using the `result` object built from scraping
 
-                console.log(result);
+                // console.log(result);
 
-                // db.Article.create(result)
-                //   .then(function (dbArticle) {
-                //     // View the added result in the console
-                //     console.log(dbArticle);
-                //   })
-                //   .catch(function (err) {
-                //     // If an error occurred, log it
-                //     console.log(err);
-                //   });
+                db.Article.create(result)
+                  .then(function (dbArticle) {
+                    // View the added result in the console
+                    console.log(dbArticle);
+                  })
+                  .catch(function (err) {
+                    // If an error occurred, log it
+                    console.log(err);
+                  });
             });
 
             // Send a message to the client
