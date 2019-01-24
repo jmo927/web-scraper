@@ -1,20 +1,19 @@
-var express = require("express");
-var mongoose = require("mongoose");
+//Dependencies
+const express = require("express");
+const mongoose = require("mongoose");
+var exphbs = require("express-handlebars");
 
-
-var PORT = 3000;
+const PORT = 3000;
 
 // Initialize Express
-var app = express();
+const app = express();
 
 // Configure middleware
-
-// Use morgan logger for logging requests
-// app.use(logger("dev"));
 
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 // Make public a static folder
 app.use(express.static("public"));
 
@@ -22,12 +21,16 @@ app.use(express.static("public"));
 // mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 mongoose.connect(MONGODB_URI);
 
 // Routes
 require("./routes/routes")(app);
+
+// Handlebars
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // Start the server
 app.listen(PORT, function () {
