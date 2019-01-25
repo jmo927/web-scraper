@@ -31,14 +31,14 @@ $(document).on("click", ".article-wrap", function() {
       // A button to submit a new note, with the id of the article saved to it
       $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
 
-      // If there's a note in the article
-      if (data.note) {
         // Place the title of the note in the title input
         
         // Place the body of the note in the body textarea
-        $("#notes").prepend("<p>" + data.note.body + "</p>");
-        $("#notes").prepend("<h2>" + data.note.title + "</h2>");
-      }
+        data.note.forEach( (index) => {
+          $("#notes").prepend("<p>" + index.body + "</p>");
+          $("#notes").prepend("<h2>" + index.title + "</h2>");
+        })
+        
     });
 });
 

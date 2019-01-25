@@ -12,18 +12,18 @@ const cheerio = require("cheerio");
 // Routes
 // =============================================================
 module.exports = function (app) {
-    
+
     // Our index route
     app.get("/", function (req, res) {
-        
+
         // let dataPass = {
         //     articles: db.Article.find({}).sort({dateStamp:1})
         // }
-        
+
         // console.log(dataPass);
         // res.render("index", dataPass);
 
-        db.Article.find({}).sort({dateStamp:-1}).exec(function (err, data) {
+        db.Article.find({}).sort({ dateStamp: -1 }).exec(function (err, data) {
             if (err) {
                 console.log(err);
             } else {
@@ -33,7 +33,7 @@ module.exports = function (app) {
                 res.render("index", allArticles)
             }
         })
-        
+
     })
 
     // A GET route for scraping our website
@@ -45,7 +45,7 @@ module.exports = function (app) {
 
             // Now, we grab every h2 within an article tag, and do the following:
             $("li.article").each(function (i, element) {
-                
+
                 const result = {};
 
                 result.title = $(this)
@@ -68,7 +68,7 @@ module.exports = function (app) {
                     .children("li.byline")
                     .children("a")
                     .attr("title");
-                
+
                 //Checks if this result is already in our db
                 let hasBeenScraped = false;
 
@@ -95,7 +95,7 @@ module.exports = function (app) {
             });
 
             // Send a message to the client
-            location.assign("/")
+            res.redirect("/")
         });
     });
 
@@ -131,7 +131,7 @@ module.exports = function (app) {
 
         db.Note.create(req.body)
             .then(function (dbNote) {
-                return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true })
+                return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { note: dbNote._id } }, { new: true })
             })
             .then(function (dbArticle) {
                 res.json(dbArticle);
