@@ -1,11 +1,12 @@
 <div id="articles">
+    <h2>The Articles</h2>
     <ul>
     {{#each articles }}
     <li class="article-wrap" data-id="{{_id}}">
-        <h1>{{title}}</h1>
-        <p>{{summary}}</p>
-        <h2><a href="{{link}}" target="_blank">Link</a></h2>
-        <h2>{{byline}}, {{dateStamp}}</h2>
+        <h1 class="article-title">{{title}}</h1>
+        <p class="article-summary">{{summary}}</p>
+        <h3 class="article-link"><a href="{{link}}" target="_blank">Link</a></h3>
+        <h3 class="article-byline">{{byline}}, {{dateStamp}}</h3>
     </li>
     {{/each}}
 </ul>

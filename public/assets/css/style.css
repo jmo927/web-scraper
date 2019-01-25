@@ -1,30 +1,59 @@
-body { background-color: #F2F6D0 }
+body { background-color: rgb(236, 236, 230) }
+
 #wrapper {
   width: 960px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 5%;
 }
+
 #articles {
   display: inline-block;
   overflow: auto;
   width: 60%;
   height: 700px;
 }
+
+#articles h2 {
+  text-align: center;
+}
+
+.article-wrap {
+  border: 2px solid black;
+  margin: 5px;
+  padding: 5px;
+}
+
+.article-title {
+  font-size: 24px;
+}
+
+.article-summary, .article-link, .article-byline {
+  font-size: 18px;
+}
+
 #notes {
   float: right;
   width: 30%;
 }
+
+.note-title {
+  font-size: 22px;
+}
+
 textarea, input {
   display: block;
   width: 100%;
   background-color: #FCF5C7;
+  margin: 5px;
 }
+
 input {
-  height: 36px;
-  font-size: 24px;
+  height: 30px;
+  font-size: 20px;
 }
+
 textarea {
-  height: 200px;
-  font-size: 18px;
+  height: 150px;
+  font-size: 16px;
 }

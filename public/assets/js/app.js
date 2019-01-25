@@ -1,3 +1,5 @@
+// import { notStrictEqual } from "assert";
+
 // Grab the articles as a json
 // $.getJSON("/articles", function(data) {
 //   // For each one
@@ -8,7 +10,7 @@
 // });
 
 // Whenever someone clicks a li tag
-$(document).on("click", ".article-wrap", function() {
+$(document).on("click", ".article-wrap", function () {
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag
@@ -20,30 +22,31 @@ $(document).on("click", ".article-wrap", function() {
     url: "/articles/" + thisId
   })
     // With that done, add the note information to the page
-    .then(function(data) {
-      console.log(data);
+    .then(function (data) {
+      $("#notes").append("<h2 class='note-title'>Comments for '" + data.title + "'</h2>");
+
+      for (let i = 0; i < data.note.length; i++) {
+  
+        $("#notes").append("<h2>" + data.note[i].title + "</h2>");
+        $("#notes").append("<p>" + data.note[i].body + "</p>");
+        $("#notes").append("<button class='note-btn' data-id='" + data.note[i]._id + "'>Delete</button>");
+      }
+
+
       // The title of the article
-      $("#notes").append("<h2>" + data.title + "</h2>");
+
       // An input to enter a new title
-      $("#notes").append("<input id='titleinput' name='title' >");
+      $("#notes").append("<input id='titleinput' name='title' placeholder='Title, maybe?'>");
       // A textarea to add a new note body
-      $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+      $("#notes").append("<textarea id='bodyinput' name='body' placeholder='This should be your comment'></textarea>");
       // A button to submit a new note, with the id of the article saved to it
       $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
-
-        // Place the title of the note in the title input
-        
-        // Place the body of the note in the body textarea
-        data.note.forEach( (index) => {
-          $("#notes").prepend("<p>" + index.body + "</p>");
-          $("#notes").prepend("<h2>" + index.title + "</h2>");
-        })
-        
+    
     });
 });
 
 // When you click the savenote button
-$(document).on("click", "#savenote", function() {
+$(document).on("click", "#savenote", function () {
   // Grab the id associated with the article from the submit button
   var thisId = $(this).attr("data-id");
 
@@ -59,7 +62,7 @@ $(document).on("click", "#savenote", function() {
     }
   })
     // With that done
-    .then(function(data) {
+    .then(function (data) {
       // Log the response
       console.log(data);
       // Empty the notes section
@@ -70,3 +73,16 @@ $(document).on("click", "#savenote", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+$(document).on("click", ".note-btn", function () {
+  console.log("Delete!");
+  const thisId = $(this).attr("data-id");
+  $.ajax({
+    method: "DELETE",
+    url: "/articles/" + thisId
+  })
+    // With that done, add the note information to the page
+    .then(function (data) {
+      $("#notes").empty();
+    });
+})

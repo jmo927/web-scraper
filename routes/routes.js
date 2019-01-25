@@ -141,4 +141,11 @@ module.exports = function (app) {
             })
     });
 
+    app.delete("/articles/:id", function (req, res) {
+        db.Note.findByIdAndRemove(req.params.id, function (err) {
+            if (err) return next(err);
+            res.send('Deleted successfully!');
+        })
+    })
+
 }
