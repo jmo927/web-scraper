@@ -1,13 +1,3 @@
-// import { notStrictEqual } from "assert";
-
-// Grab the articles as a json
-// $.getJSON("/articles", function(data) {
-//   // For each one
-//   for (var i = 0; i < data.length; i++) {
-//     // Display the apropos information on the page
-//     $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
-//   }
-// });
 
 // Whenever someone clicks a li tag
 $(document).on("click", ".article-wrap", function () {
@@ -25,23 +15,46 @@ $(document).on("click", ".article-wrap", function () {
     .then(function (data) {
       $("#notes").append("<h2 class='note-title'>Comments for '" + data.title + "'</h2>");
 
+      let newForm = $("<form>")
+
+      newForm.append("<label for='bodyinput'>New Comment</label>")
+      newForm.append("<textarea class='form-control' id='bodyinput' rows='3'></textarea>")
+      newForm.append("<button data-id='" + data._id + "' id='savenote' class='btn btn-success'>Save Note</button>");
+    
+      $("#notes").append(newForm);
+      $("#notes").append("<hr>")
+
       for (let i = 0; i < data.note.length; i++) {
   
-        $("#notes").append("<h2>" + data.note[i].title + "</h2>");
-        $("#notes").append("<p>" + data.note[i].body + "</p>");
-        $("#notes").append("<button class='note-btn' data-id='" + data.note[i]._id + "'>Delete</button>");
+        let newCard = $("<div>")
+          .addClass("card")
+          .addClass("article-comment");
+
+        let newCardBody = $("<div>")
+          .addClass("card-body");
+        
+        let newCardTitle = $("<h5>")
+          .addClass("card-title")
+          .text(data.note[i].title);
+
+        let newCardText = $("<p>")
+          .addClass("card-text")
+          .text(data.note[i].body);
+
+        let newCardBtn = $("<button>")
+          .addClass("card-link")
+          .addClass("note-btn")
+          .addClass("btn")
+          .addClass("btn-warning")
+          .attr("data-id", data.note[i]._id)
+          .text("Delete");
+
+        newCardBody.append(newCardTitle, newCardText, newCardBtn);
+
+        newCard.append(newCardBody);
+        
+        $("#notes").append(newCard);
       }
-
-
-      // The title of the article
-
-      // An input to enter a new title
-      $("#notes").append("<input id='titleinput' name='title' placeholder='Title, maybe?'>");
-      // A textarea to add a new note body
-      $("#notes").append("<textarea id='bodyinput' name='body' placeholder='This should be your comment'></textarea>");
-      // A button to submit a new note, with the id of the article saved to it
-      $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
-    
     });
 });
 
@@ -85,4 +98,30 @@ $(document).on("click", ".note-btn", function () {
     .then(function (data) {
       $("#notes").empty();
     });
+})
+
+// if (articleRange > 0) {
+//   $("#articles").append("<a href=/articles/range/" + (articleRange - 5) + ">Back</a>")
+// }
+
+// $("#articles").append("<button id='next-5' class='btn'>Next 5</button>");
+
+// $("#articles").append("<a href='/' id='next-5'>Next 5</a>");
+
+$(document).on("click", "#next-5", function () {
+  event.preventDefault();
+  let articleRange = $("#next-5").attr("data-id");
+
+  articleRange = +articleRange + 5;
+
+  location.assign("/articles/range/" + articleRange)
+})
+
+$(document).on("click", "#back-5", function () {
+  event.preventDefault();
+  let articleRange = $("#back-5").attr("data-id");
+
+  articleRange = +articleRange - 5;
+
+  location.assign("/articles/range/" + articleRange)
 })

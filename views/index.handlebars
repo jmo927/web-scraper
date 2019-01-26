@@ -10,6 +10,9 @@
     </li>
     {{/each}}
 </ul>
-
+{{#if range}}
+<button id="back-5" class="btn" data-id="{{range}}">Back</button>
+{{/if}}
+<button id="next-5" class="btn" data-id="{{range}}">Next 5</button>
 </div>
 <div id="notes"></div>

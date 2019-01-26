@@ -16,14 +16,7 @@ module.exports = function (app) {
     // Our index route
     app.get("/", function (req, res) {
 
-        // let dataPass = {
-        //     articles: db.Article.find({}).sort({dateStamp:1})
-        // }
-
-        // console.log(dataPass);
-        // res.render("index", dataPass);
-
-        db.Article.find({}).sort({ dateStamp: -1 }).exec(function (err, data) {
+        db.Article.find({}).sort({ dateStamp: -1 }).limit(5).exec(function (err, data) {
             if (err) {
                 console.log(err);
             } else {
@@ -146,6 +139,24 @@ module.exports = function (app) {
             if (err) return next(err);
             res.send('Deleted successfully!');
         })
+    })
+
+    app.get("/articles/range/:id", function (req, res) {
+
+        const skipRange = parseInt(req.params.id);
+
+        db.Article.find({}).sort({ dateStamp: -1 }).limit(5).skip(skipRange).exec(function (err, data) {
+            if (err) {
+                console.log(err);
+            } else {
+                let allArticles = {
+                    articles: data,
+                    range: skipRange
+                }
+                res.render("index", allArticles)
+            }
+        })
+
     })
 
 }
